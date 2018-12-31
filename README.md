@@ -1,4 +1,4 @@
-# Kotlin Multiplatform project boilerplate
+# Kotlin multiplatform project boilerplate
 
 - Use Gradle Kotlin DSL
 - Separate project by build target
