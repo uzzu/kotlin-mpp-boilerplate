@@ -30,6 +30,6 @@ fun Settings.includeExampleProject(name: String, dir: String) {
     project(":examples:$name").buildFileName = "$name.build.gradle.kts"
 }
 
-// includeExampleProject("bar")
+// includeExampleProject("bar", "bar")
 
 // endregion
