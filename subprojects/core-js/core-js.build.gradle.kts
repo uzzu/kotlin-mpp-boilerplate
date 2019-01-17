@@ -3,6 +3,8 @@ import com.moowork.gradle.node.task.NodeTask
 import org.jetbrains.kotlin.gradle.dsl.KotlinJsOptions
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
+evaluationDependsOn(":core-common")
+
 plugins {
     id(PluginsId.nodeGradle)
     id(PluginsId.kotlinMultiPlatformJs)

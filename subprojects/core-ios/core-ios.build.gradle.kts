@@ -2,6 +2,8 @@ import org.jetbrains.kotlin.gradle.plugin.experimental.internal.KotlinNativeMain
 import org.jetbrains.kotlin.gradle.plugin.experimental.internal.OutputKind
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 
+evaluationDependsOn(":core-common")
+
 plugins {
     id(PluginsId.kotlinMultiPlatformNative)
 }

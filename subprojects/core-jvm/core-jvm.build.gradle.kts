@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+evaluationDependsOn(":core-common")
+
 plugins {
     id(PluginsId.kotlinMultiPlatformJvm)
 }

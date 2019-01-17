@@ -1,3 +1,5 @@
+evaluationDependsOn(":core-common")
+
 plugins {
     id(PluginsId.androidLibrary)
     id(PluginsId.kotlinMultiPlatformAndroid)
