@@ -26,32 +26,31 @@ val Project.publishingArtifactId: String
         project.name.replace(coreModuleName, it)
     }
 
-data class SourceJarProject(
-    val name: String,
-    val isAndroid: Boolean = false
-)
-
-fun TaskContainerScope.createSourceJar(isAndroid: Boolean = false, vararg sourceJarProjects: SourceJarProject): Jar =
+fun TaskContainerScope.createSourceJar(vararg includeProjectNames: String): Jar =
     create("sourceJar", Jar::class) {
-        dependsOn("classes")
+        val isAndroid = project.isAndroidProject
+        if (isAndroid) {
+            dependsOn("assemble")
+        } else {
+            dependsOn("classes")
+        }
         classifier = "sources"
         setDuplicatesStrategy(DuplicatesStrategy.EXCLUDE)
 
-        val targetSrc = project.mainSourceDirectorySet(isAndroid)
+        val targetSrc = project.mainSourceDirectorySet
         from(targetSrc)
 
-        sourceJarProjects
-            .map { project.project(it.name).mainSourceDirectorySet(it.isAndroid) }
+        includeProjectNames
+            .map { project.project(it).mainSourceDirectorySet }
             .forEach { from(it) }
     }
 
-private fun Project.mainSourceDirectorySet(isAndroid: Boolean = false): SourceDirectorySet =
-    if (isAndroid) {
+private val Project.mainSourceDirectorySet: SourceDirectorySet
+    get() = if (isAndroidProject) {
         androidMainSourceDirectorySet
     } else {
         kotlinSourceDirectorySet
     }
-
 
 private val Project.kotlinSourceDirectorySet: SourceDirectorySet
     get() = sourceSets.getByName("main").withGroovyBuilder { getProperty("kotlin") as SourceDirectorySet }
@@ -69,3 +68,6 @@ private inline fun <T> Any.withGroovyBuilder(builder: GroovyBuilderScope.() -> T
 
 private val Project.sourceSets: SourceSetContainer
     get() = (this as ExtensionAware).extensions.getByName("sourceSets") as SourceSetContainer
+
+private val Project.isAndroidProject: Boolean
+    get() = (this as ExtensionAware).extensions.findByName("android") != null
